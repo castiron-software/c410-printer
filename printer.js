@@ -298,10 +298,10 @@ function Printer(name) {
 Printer.list = function () {
 	return parseStdout(spawnSync('lpstat -p').stdout)
 		.filter(function (line) {
-			return line.match(/^printer/);
+			return (line.match(/^printer/) || line.match(/^impressora/));
 		})
 		.map(function (printer) {
-			return printer.match(/^printer (\S+)/)[1];
+			return (printer.match(/(?: \S+)/)[0].trim());
 		});
 };
 

@@ -1,31 +1,31 @@
 {
-  "name": "zuzel-printer",
+  "name": "c410-printer",
   "description": "Create and manage one or multiple printers (w/ CUPS), send file path or node buffer with support for all lp options. Get feedback on jobs you sent.",
   "version": "1.0.4",
-  "homepage": "http://github.com/iSuslov/node-printer",
+  "homepage": "https://github.com/c410solutions/c410-printer",
   "keywords": [
     "printer",
     "print",
     "cups",
-    "node v0.10.x",
+    "node v12.x",
     "lp",
     "job"
   ],
-  "author": "Ivan Suslov <digitalzuzel@gmail.com>",
+  "author": "Caio Araujo <caiofaar@gmail.com>",
   "main": "./printer",
   "scripts": {
     "test": "jasmine"
   },
   "bugs": {
     "mail": "",
-    "url": "http://github.com/iSuslov/node-printer/issues"
+    "url": "https://github.com/c410solutions/c410-printer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iSuslov/node-printer.git"
+    "url": "https://github.com/c410solutions/c410-printer.git"
   },
   "engines": {
-    "node": ">=0.10.36"
+    "node": ">=12.16.1"
   },
   "dependencies": {
     "sync-exec": ">=0.6.2"
@@ -33,7 +33,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/iSuslov/node-printer/raw/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/c410solutions/c410-printer/master/LICENCE"
     }
   ],
   "devDependencies": {
