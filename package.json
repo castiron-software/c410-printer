@@ -1,7 +1,7 @@
 {
   "name": "c410-printer",
   "description": "Create and manage one or multiple printers (w/ CUPS), send file path or node buffer with support for all lp options. Get feedback on jobs you sent.",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "homepage": "https://github.com/c410solutions/c410-printer",
   "keywords": [
     "printer",
