@@ -6,46 +6,47 @@ utils.inherits(Job, events.EventEmitter);
 
 function Job(lp) {
 
-    var self = this;
-    var error;
+  var self = this;
+  var error;
 
-    lp.stderr.on('data', function (data) {
-        error = data.slice(0, data.length - 1);
-    });
+  lp.stderr.on('data', function(data) {
+    error = data.slice(0, data.length - 1);
+  });
 
-    lp.stdout.on('data', function (data) {
-        self.identifier = data
-            .toString()
-            .match(/^(?:\S+\s){3}(\S+)/)[1].match(/^(.*-)/)[1];
-    });
+  lp.stdout.on('data', function(data) {
+    self.identifier = parseInt(data
+      .toString()
+        .match(/^(?:\S+\s){3}(\S+)/)[1].toString().match(/^(.*-)(\d+)/)[2]);
+  });
 
-    lp.on('exit', function (code) {
-        if (0 === code) {
-            self.emit('sent', self.identifier);
-        } else {
-            self.emit('error', error);
-        }
-    });
+  lp.on('exit', function(code) {
+    if (0 === code) {
+      self.emit('sent', self.identifier);
+    }
+    else {
+      self.emit('error', error);
+    }
+  });
 }
 
-Job.prototype.update = function (status) {
-    this.status = status;
-    this.emit('updated', status);
+Job.prototype.update = function(status) {
+  this.status = status;
+  this.emit('updated', status);
 };
 
-Job.prototype.unqueue = function () {
-    if (this.status && this.status.rank === 'active') {
-        this.status.rank = 'completed';
-        this.emit('completed');
-    }
+Job.prototype.unqueue = function() {
+  if (this.status && this.status.rank === 'active') {
+    this.status.rank = 'completed';
+    this.emit('completed');
+  }
 };
 
-Job.prototype.cancel = function () {
-    var self = this;
-    var lprm = spawn('lprm', [self.identifier]);
-    lprm.on('exit', function (code) {
-        if (0 === code) self.emit('deleted');
-    });
+Job.prototype.cancel = function() {
+  var self = this;
+  var lprm = spawn('lprm', [self.identifier]);
+  lprm.on('exit', function(code) {
+    if (0 === code) self.emit('deleted');
+  });
 };
 
 module.exports = Job;
