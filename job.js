@@ -14,9 +14,9 @@ function Job(lp) {
     });
 
     lp.stdout.on('data', function (data) {
-        self.identifier = parseInt(data
+        self.identifier = data
             .toString()
-            .match(/^(?:\S+\s){3}(\S+)/)[1]);
+            .match(/^(?:\S+\s){3}(\S+)/)[1].match(/^(.*-)/)[1];
     });
 
     lp.on('exit', function (code) {
