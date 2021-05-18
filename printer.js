@@ -366,25 +366,51 @@ Printer.prototype.findJob = function (jobId) {
 	})[0];
 };
 
-Printer.prototype.printBuffer = function (data, options) {
-	var self = this;
+const spawnLp = (printer, options) => {
 	var args = buildArgs(options);
-	args.push('-d', self.name);
+
+	args.push('-d', printer.name);
 
 	var lp = spawn('lp', args);
+	
+	return lp;
+};
 
-	lp.stdin.write(data)
+const getLpJob = (printer, lp) => {
 	lp.stdin.end()
 
 	var job = new Job(lp);
 	job.on('sent', function () {
-		self.jobs.push(job);
+		printer.jobs.push(job);
 	});
 
 	job.on('completed', function () {
-		self.jobs.splice(self.jobs.indexOf(job), 1);
+		printer.jobs.splice(printer.jobs.indexOf(job), 1);
 	});
 
+	return job;
+}
+
+Printer.prototype.printBuffer = function (data, options) {
+	let lp = spawnLp(this, options);
+
+	lp.stdin.write(data);
+	
+	let job = getLpJob(this, lp);
+	
+	return job;
+};
+
+Printer.prototype.printBuffers = function (buffers, options) {
+	let lp = spawnLp(this, options);
+
+	buffers.forEach(buffer => {
+		lp.stdin.write(' ');
+		lp.stdin.write(buffer);
+	});
+	
+	let job = getLpJob(this, lp);
+	
 	return job;
 };
 
