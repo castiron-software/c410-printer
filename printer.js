@@ -295,8 +295,14 @@ function Printer(name) {
 	self.watch();
 }
 
-Printer.list = function () {
-	return parseStdout(spawnSync('lpstat -p').stdout)
+Printer.list = function (options) {
+	// Simple supports for .h option to lpstat.
+	const args = '-p';
+	if (options !== undefined && options.h) {
+		args = `${args} -h ${option.h}`;
+	}
+
+	return parseStdout(spawnSync(`lpstat ${args}`).stdout)
 		.filter(function (line) {
 			return (line.match(/^printer/) || line.match(/^impressora/));
 		})
