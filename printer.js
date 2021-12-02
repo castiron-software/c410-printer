@@ -282,11 +282,11 @@ var parseStdout = function (data) {
 		.split('\n');
 };
 
-function Printer(name) {
+function Printer(name, options) {
 	var self = this;
-	if (!Printer.match(name)) {
+	if (!Printer.match(name, options)) {
 		console.error(
-			name + ' printer does not exist ; installed printers are ' + Printer.list()
+			name + ' printer does not exist ; installed printers are ' + Printer.list(options)
 		);
 		throw new Error('Printer ' + name + ' does not exist on your system.');
 	}
@@ -311,8 +311,8 @@ Printer.list = function (options) {
 		});
 };
 
-Printer.match = function (name) {
-	return Boolean(Printer.list().filter(function (printer) {
+Printer.match = function (name, options) {
+	return Boolean(Printer.list(options).filter(function (printer) {
 		return name === printer;
 	}).length);
 };
@@ -326,9 +326,13 @@ Printer.prototype.destroy = function () {
 	})
 }
 
-Printer.prototype.watch = function () {
+Printer.prototype.watch = function (options) {
 	var self = this;
 	var args = ['-P', this.name];
+
+	if (options !== undefined && options.h) {
+		args.push('-h', options.h);
+	}
 
 	var lpq = spawn('lpq', args);
 	self.lpq = lpq;
