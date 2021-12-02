@@ -299,7 +299,7 @@ Printer.list = function (options) {
 	// Simple supports for .h option to lpstat.
 	const args = '-p';
 	if (options !== undefined && options.h) {
-		args = `${args} -h ${option.h}`;
+		args = `${args} -h ${options.h}`;
 	}
 
 	return parseStdout(spawnSync(`lpstat ${args}`).stdout)
