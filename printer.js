@@ -302,7 +302,9 @@ Printer.list = function (options) {
 		args = `${args} -h ${options.h}`;
 	}
 
-	return parseStdout(spawnSync(`lpstat ${args}`).stdout)
+	const lpstatCommand = `lpstat ${args}`;
+	console.debug(lpstatCommand);
+	return parseStdout(spawnSync(lpstatCommand).stdout)
 		.filter(function (line) {
 			return (line.match(/^printer/) || line.match(/^impressora/));
 		})
